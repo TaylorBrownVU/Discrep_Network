@@ -6,17 +6,7 @@ output: html_document
 ---
 Step 1: install and run packages 
 
-```{r setup, include=FALSE}
-install.packages("bootnet")
-install.packages("networktools")
-install.packages("NetworkComparisonTest")
-install.packages("qgraph")
-install.packages("psych")
-install.packages("tidyverse")
-install.packages("semTools")
-install.packages("psychotools")
-install.packages("semPlot")
-install.packages("haven")
+```{r echo=FALSE, warning=FALSE, error=FALSE}
 library(bootnet)
 library(networktools)
 library(NetworkComparisonTest)
@@ -47,7 +37,7 @@ describe(netdata1)
 ```
 
 Step 3: Estimate Network
-```{r}
+```{r echo=FALSE, warning=FALSE, error=FALSE}
 
 network1 <- estimateNetwork(netdata1, default="EBICglasso")
 
@@ -59,7 +49,7 @@ Step 4: Estimate network stability by bootstrapping network
 B1 = default bootstrapping 
 B2 = case dropping bootstrapping 
 
-```{r}
+```{r echo=FALSE, warning=FALSE, error=FALSE}
 b1 <- bootnet(network1, boots=1000, statistics=c("strength", "expectedInfluence", "edge"))
 
 b2 <- bootnet(network1, boots=1000, type="case", statistics=c("strength", "expectedInfluence", "edge"))
