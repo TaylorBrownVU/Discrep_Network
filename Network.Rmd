@@ -37,7 +37,7 @@ describe(netdata1)
 ```
 
 Step 3: Estimate Network
-```{r echo=FALSE, warning=FALSE, error=FALSE}
+```{r}
 
 network1 <- estimateNetwork(netdata1, default="EBICglasso")
 
@@ -67,8 +67,8 @@ plot(network1, layout="spring", vsize=6, border.color="black", color=c('lightblu
 
 Step 6: Get Centrality Indices
 ```{r}
-Centrality1<-centralityTable(network1)
-write.csv(Centrality1, "Centrality1.csv")
+Centrality1 <-centralityTable(network1)
+write.csv(Centrality1)
 view(Centrality1)
 
 ```
