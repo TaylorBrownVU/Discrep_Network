@@ -1,0 +1,108 @@
+---
+title: "Network analysis"
+author: "Taylor"
+date: '2022'
+output: html_document
+---
+Step 1: install and run packages 
+
+```{r setup, include=FALSE}
+install.packages("bootnet")
+install.packages("networktools")
+install.packages("NetworkComparisonTest")
+install.packages("qgraph")
+install.packages("psych")
+install.packages("tidyverse")
+install.packages("semTools")
+install.packages("psychotools")
+install.packages("semPlot")
+install.packages("haven")
+library(bootnet)
+library(networktools)
+library(NetworkComparisonTest)
+library(qgraph)
+library(psych)
+library(psychotools)
+library(tidyverse)
+library(semTools)
+library(semPlot)
+library(haven)
+
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Step 2: import and define dataset
+```{r}
+dataset <- read_sav("TaylorCleaned.sav")
+View(dataset)
+myvars <- c("w2_Dis1", "w2_Dis2", "w2_Dis6", "w2_Dis7", "w2_Dis8", "w2_Dis9", "w2_Dis10", "w2_Dis15", "Addiction")
+
+netdata<-dataset[myvars]
+
+netdata1<-netdata[c(-1)]
+
+describe(netdata)
+describe(netdata1)
+
+```
+
+Step 3: Estimate Network
+```{r}
+
+network1 <- estimateNetwork(netdata1, default="EBICglasso")
+
+```
+
+
+Step 4: Estimate network stability by bootstrapping network
+
+B1 = default bootstrapping 
+B2 = case dropping bootstrapping 
+
+```{r}
+b1 <- bootnet(network1, boots=1000, statistics=c("strength", "expectedInfluence", "edge"))
+
+b2 <- bootnet(network1, boots=1000, type="case", statistics=c("strength", "expectedInfluence", "edge"))
+
+
+```
+
+
+Step 5: Plot the Network
+```{r echo=FALSE, error=FALSE, warning=FALSE}
+
+plot(network1, layout="spring", vsize=6, border.color="black", color=c('lightblue','orange', 'red'))
+
+```
+
+Step 6: Get Centrality Indices
+```{r}
+Centrality1<-centralityTable(network1)
+write.csv(Centrality1, "Centrality1.csv")
+view(Centrality1)
+
+```
+
+
+Step 7: Get centrality stability coefficient
+```{r echo=FALSE, error=FALSE, warning=FALSE}
+corStability(b2)
+```
+
+Step 8: Stability of the Network Plotting
+```{r}
+pdf("CentrStability1.pdf")
+plot(b2)
+dev.off()
+```
+
+
+```{r}
+pdf("edges.pdf")
+plot(b1, "edge", plot="difference", onlyNonZero=TRUE, order = "sample")
+```
+
+
+
+
+
