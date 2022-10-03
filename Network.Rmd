@@ -40,6 +40,7 @@ Step 3: Estimate Network
 ```{r}
 
 network1 <- estimateNetwork(netdata1, default="EBICglasso")
+plot(network1, layout = "spting", labels = TRUE)
 
 ```
 
